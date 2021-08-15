@@ -1,0 +1,64 @@
+1---------------------------INSTALANDO DEPENDENCIAS--------------------------------------------------------------
+
+sudo apt-get update
+
+sudo apt-get install python3-dev libffi-dev gcc libssldev python3-pip ansible
+
+sudo pip3 install -U pip
+
+2. -------------------------------Instalar o kolla-ansible----------------------------------------------------------------------
+
+vm-amazon# sudo pip install kolla-ansible
+
+3. -------------------------------Criar o diretório /etc/kolla:------------------------------------------------------------------
+
+sudo mkdir -p /etc/kolla
+sudo chown $USER:$USER /etc/kolla
+
+4. -------------------------------COPIANDO ARQUIVOS PARA O DIRETORIO /ETC/KOLLA--------------------
+
+cp -r /usr/local/share/kolla-ansible/etc_examples/kolla/* /etc/kolla
+
+5. -------------------------------COPIANDO ARQUIVOS PARA O DIRETORIO DO USUARIO ATUAL--------
+
+cp /usr/local/share/kolla-ansible/ansible/inventory/* .
+
+6. -------------------------------CONFIGURANDO AS SENHAS DO KOLLA------------------------------------------
+
+kolla-genpwd
+
+7. -------------------------------CONFIGURANDO ARQUIVO-------------------------------------------------------------
+
+vim /etc/kola/globals.yml
+
+	a.----------------------especificando imagens e o tipo de instalação-------------------------------------------
+
+	kolla_base_distro: "ubuntu"
+	kolla_install_type: "binary"
+
+	b. ----------------------definindo opções de rede--------------------------------------------------------------------
+
+	network_interface: "eth0"
+	neutron_external_interface: "eth1"
+	kolla_internal_vip_address: <ip da interface eth0>
+	enable_haproxy: "no"
+
+
+	c. ----------------------informando o tipo de Hipoervisor de uso-------------------------------------------------
+
+	nova_compute_virt_type: "qemu"
+
+8. ----------------------------implantando o openstack---------------------------------------------------------------------
+	a. ---------------------Configurando servidores----------------------------------------------------------------------
+
+	sudo kolla-ansible -i ./all-in-one bootstrapservers
+
+	b.----------------------implantando open-stack-----------------------------------------------------------------------
+
+	pip install python-openstackclient
+
+
+9. ------------------------------instalando o CLIENTE do openstack----------------------------------------------------
+
+
+pip install python-openstackclient
