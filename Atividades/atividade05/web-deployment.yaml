@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: web-deployment
+spec:
+        replicas: 2
+        template:
+                metadata:
+                        name: web
+                        labels:
+                                app: web
+                spec:
+                        containers:
+                                - name: web-container
+                                  image: dockersamples/k8s-wordsmith-web
+                                  ports:
+                                          - containerPort: 80
+        selector:
+                matchLabels:
+                        app: web
